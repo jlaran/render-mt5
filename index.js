@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const axios = require('axios');
 app.use(express.json());
 
 let derivSignal = null;
@@ -38,6 +39,40 @@ app.get('/mt5/weltrade/execute', (req, res) => {
   const signal = weltradeSignal;
   weltradeSignal = null; // consumirla
   res.json(signal);
+});
+
+app.post('/mt5/report', (req, res) => {
+  const report = req.body;
+  console.log("📨 Reporte recibido desde MT5:", report);
+
+  // Aquí podés reenviarlo a Telegram si querés
+  res.json({ status: "ok" });
+});
+
+app.post('/mt5/report', async (req, res) => {
+  const report = req.body;
+  console.log("📨 Reporte desde MT5:", report);
+
+  const message = `
+✅ Orden ejecutada en MT5:
+• Símbolo: ${report.symbol}
+• Dirección: ${report.side}
+• Entrada: ${report.entry_price}
+• SL: ${report.sl}
+• TP1: ${report.tp1}
+• TP2: ${report.tp2}
+  `.trim();
+
+  try {
+    await axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
+      chat_id: process.env.CHAT_ID,
+      text: message
+    });
+    res.json({ status: "ok" });
+  } catch (e) {
+    console.error("❌ Error enviando a Telegram:", e.message);
+    res.status(500).send("Error");
+  }
 });
 
 // 🟢 Inicia servidor
