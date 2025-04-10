@@ -54,7 +54,7 @@ app.post('/mt5/report', (req, res) => {
 
 app.post('/mt5/report', async (req, res) => {
   const report = req.body;
-  console.log("📨 Reporte desde MT5:", report);
+  console.log("📨 Reporte ------------ desde MT5:", report);
 
 //   const message = `
 // ✅ Orden ejecutada en MT5:
