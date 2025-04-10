@@ -6,6 +6,9 @@ app.use(express.json());
 let derivSignal = null;
 let weltradeSignal = null;
 
+const chatid = process.env.CHAT_ID
+const token = process.env.BOT_TOKEN
+
 // ✅ Verifica conexión
 app.get('/ping', (req, res) => {
   res.json({ status: "ok", message: "Servidor MT5 en línea ✅" });
@@ -63,11 +66,17 @@ app.post('/mt5/report', async (req, res) => {
 • TP2: ${report.tp2}
   `.trim();
 
+  console.log(message);
+
   try {
-    await axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
-      chat_id: process.env.CHAT_ID,
+    await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+      chat_id: chatid,
       text: message
     });
+
+    console.log(` Token ${token}`);
+    console.log(` chatid ${chatid}`);
+
     res.json({ status: "ok" });
   } catch (e) {
     console.error("❌ Error enviando a Telegram:", e.message);
