@@ -17,8 +17,19 @@ app.post('/mt5/signal', (req, res) => {
   res.json({ status: "ok", message: "Señal guardada" });
 });
 
-// 📤 Enviar señal a MT5 (una sola vez)
-app.get('/mt5/execute', (req, res) => {
+// 📤 Enviar señal a Deriv MT5 (una sola vez)
+app.get('/mt5/deriv/execute', (req, res) => {
+  if (!latestSignal) {
+    return res.status(204).send(); // No Content
+  }
+
+  const signal = latestSignal;
+  latestSignal = null; // consumirla
+  res.json(signal);
+});
+
+// 📤 Enviar señal a Weltrade MT5 (una sola vez)
+app.get('/mt5/weltrade/execute', (req, res) => {
   if (!latestSignal) {
     return res.status(204).send(); // No Content
   }
