@@ -1,46 +1,47 @@
 const express = require('express');
 const app = express();
-
 app.use(express.json());
 
-let latestSignal = null;
+let derivSignal = null;
+let weltradeSignal = null;
 
-// 🧪 Ping
+// ✅ Verifica conexión
 app.get('/ping', (req, res) => {
-  res.json({ status: "ok", message: "MT5 está conectado correctamente ✅" });
+  res.json({ status: "ok", message: "Servidor MT5 en línea ✅" });
 });
 
-// 📥 Recibir señal desde el bot
-app.post('/mt5/signal', (req, res) => {
-  latestSignal = req.body;
-  console.log("✅ Señal recibida:", latestSignal);
-  res.json({ status: "ok", message: "Señal guardada" });
+// ✅ BOT ENVÍA señal para Deriv
+app.post('/mt5/deriv/signal', (req, res) => {
+  derivSignal = req.body;
+  console.log("📥 Señal Deriv recibida:", derivSignal);
+  res.json({ status: "ok" });
 });
 
-// 📤 Enviar señal a Deriv MT5 (una sola vez)
+// ✅ MT5 CONSULTA señal para Deriv
 app.get('/mt5/deriv/execute', (req, res) => {
-  if (!latestSignal) {
-    return res.status(204).send(); // No Content
-  }
-
-  const signal = latestSignal;
-  latestSignal = null; // consumirla
+  if (!derivSignal) return res.status(204).send(); // No Content
+  const signal = derivSignal;
+  derivSignal = null; // consumirla
   res.json(signal);
 });
 
-// 📤 Enviar señal a Weltrade MT5 (una sola vez)
+// ✅ BOT ENVÍA señal para Weltrade
+app.post('/mt5/weltrade/signal', (req, res) => {
+  weltradeSignal = req.body;
+  console.log("📥 Señal Weltrade recibida:", weltradeSignal);
+  res.json({ status: "ok" });
+});
+
+// ✅ MT5 CONSULTA señal para Weltrade
 app.get('/mt5/weltrade/execute', (req, res) => {
-  if (!latestSignal) {
-    return res.status(204).send(); // No Content
-  }
-
-  const signal = latestSignal;
-  latestSignal = null; // consumirla
+  if (!weltradeSignal) return res.status(204).send(); // No Content
+  const signal = weltradeSignal;
+  weltradeSignal = null; // consumirla
   res.json(signal);
 });
 
-// Escucha puerto asignado por Render o 5000 en local
+// 🟢 Inicia servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🌐 Servidor corriendo en puerto ${PORT}`);
+  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
 });
