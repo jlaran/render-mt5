@@ -74,19 +74,19 @@ app.post('/mt5/report', async (req, res) => {
   console.log(`📩 Mensaje: ${message}`);
   
 
-  try {
-    await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
-      chat_id: chatid,
-      text: message
-    });
+  // try {
+  //   await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+  //     chat_id: chatid,
+  //     text: message
+  //   });
 
-    console.log("✅ Mensaje enviado a Telegram");  // <-- esto te confirmará si sí pasó
+  //   console.log("✅ Mensaje enviado a Telegram");  // <-- esto te confirmará si sí pasó
 
-    res.json({ status: "ok" });
-  } catch (e) {
-    console.error("❌ Error enviando a Telegram:", e.message);
-    res.status(500).send("Error");
-  }
+  //   res.json({ status: "ok" });
+  // } catch (e) {
+  //   console.error("❌ Error enviando a Telegram:", e.message);
+  //   res.status(500).send("Error");
+  // }
 });
 
 // 🟢 Inicia servidor
