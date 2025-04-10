@@ -56,15 +56,17 @@ app.post('/mt5/report', async (req, res) => {
   const report = req.body;
   console.log("📨 Reporte desde MT5:", report);
 
-  const message = `
-✅ Orden ejecutada en MT5:
-• Símbolo: ${report.symbol}
-• Dirección: ${report.side}
-• Entrada: ${report.entry_price}
-• SL: ${report.sl}
-• TP1: ${report.tp1}
-• TP2: ${report.tp2}
-  `.trim();
+//   const message = `
+// ✅ Orden ejecutada en MT5:
+// • Símbolo: ${report.symbol}
+// • Dirección: ${report.side}
+// • Entrada: ${report.entry_price}
+// • SL: ${report.sl}
+// • TP1: ${report.tp1}
+// • TP2: ${report.tp2}
+//   `.trim();
+
+  const message = "Listo!!";
 
   console.log(message);
 
