@@ -68,7 +68,11 @@ app.post('/mt5/report', async (req, res) => {
 
   const message = "Listo!!";
 
-  console.log(message);
+  console.log("➡️ Enviando mensaje a Telegram...");
+  console.log(`📬 Token: ${token}`);
+  console.log(`👥 ChatID: ${chatid}`);
+  console.log(`📩 Mensaje: ${message}`);
+  
 
   try {
     await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -76,8 +80,7 @@ app.post('/mt5/report', async (req, res) => {
       text: message
     });
 
-    console.log(` Token ${token}`);
-    console.log(` chatid ${chatid}`);
+    console.log("✅ Mensaje enviado a Telegram");  // <-- esto te confirmará si sí pasó
 
     res.json({ status: "ok" });
   } catch (e) {
